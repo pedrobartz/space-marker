@@ -15,6 +15,8 @@ pygame.display.set_icon(icon)
 
 background_image = pygame.image.load('assets/bg.jpg')
 
+markers = []
+
 def draw_markers(screen, markers):
     for marker in markers:
         pygame.draw.circle(screen, (255, 0, 0), (marker[0], marker[1]), 5)
@@ -29,19 +31,6 @@ def draw_markers(screen, markers):
         for i in range(len(markers) - 1):
             pygame.draw.line(screen, (0, 255, 0), (markers[i][0], markers[i][1]), (markers[i + 1][0], markers[i + 1][1]), 2)
 
-def save_markers():
-    try:
-        with open('markers.txt', 'w') as f:
-            for marker in markers:
-                f.write(f"{marker[0]},{marker[1]},{marker[2]}\n")
-    except Exception as e:
-        print(f"Erro ao salvar marcações: {e}")
-
-def clear_markers():
-    global markers
-    markers = []
-
-
 def get_star_name():
     root = tk.Tk()
     root.withdraw()  # Oculta a janela principal do Tkinter
@@ -51,12 +40,15 @@ def get_star_name():
     root.destroy()
     return star_name
 
+
+
+
 running  = True
 while running:
     screen.blit(background_image, (0, 0))
+    draw_markers(screen, markers)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            save_markers()
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -64,7 +56,7 @@ while running:
             star_name = get_star_name()
             markers.append((x, y, star_name))
 
-
-
+    
     pygame.display.flip()
-        
+
+pygame.quit()
