@@ -31,6 +31,31 @@ def draw_markers(screen, markers):
         for i in range(len(markers) - 1):
             pygame.draw.line(screen, (0, 255, 0), (markers[i][0], markers[i][1]), (markers[i + 1][0], markers[i + 1][1]), 2)
 
+def save_markers():
+    try:
+        with open('markers.txt', 'w') as f:
+            for marker in markers:
+                f.write(f"{marker[0]},{marker[1]},{marker[2]}\n")
+    except Exception as e:
+        print(f"Erro ao salvar marcações: {e}")
+
+def load_markers():
+    global markers
+    try:
+        if os.path.exists('markers.txt'):
+            with open('markers.txt', 'r') as f:
+                markers = []
+                for line in f:
+                    x, y, name = line.strip().split(',')
+                    markers.append((int(x), int(y), name))
+    except Exception as e:
+        print(f"Erro ao carregar marcações: {e}")
+
+def clear_markers():
+    global markers
+    markers = []
+
+
 def get_star_name():
     root = tk.Tk()
     root.withdraw()  # Oculta a janela principal do Tkinter
