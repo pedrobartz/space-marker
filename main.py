@@ -73,7 +73,7 @@ def clear_markers():
 
 def get_star_name():
     root = tk.Tk()
-    root.withdraw()  # Oculta a janela principal do Tkinter
+    root.withdraw()  
     star_name = simpledialog.askstring("Nome da Estrela", "Digite o nome da estrela:")
     if star_name is None or star_name.strip() == "":
         star_name = "Desconhecido"
@@ -98,13 +98,13 @@ while running:
             markers.append((x, y, star_name))
 
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_F10:  # Salvar marcações
+            if event.key == pygame.K_F10:  
                 save_markers()
-            elif event.key == pygame.K_F11:  # Carregar marcações
+            elif event.key == pygame.K_F11: 
                 load_markers()
-            elif event.key == pygame.K_F12:  # Excluir todas as marcações
+            elif event.key == pygame.K_F12:  
                 clear_markers()
-            elif event.key == pygame.K_ESCAPE:  # Salvar e sair
+            elif event.key == pygame.K_ESCAPE:  
                 save_markers()
                 running = False
 
