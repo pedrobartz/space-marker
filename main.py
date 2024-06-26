@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("SPACE MARKER")
 
 icon = pygame.image.load('assets/space.png')
-icon = pygame.transform.scale(icon, (32, 32)) #redimensionar icone pro tamanho certo
+icon = pygame.transform.scale(icon, (32, 32))
 pygame.display.set_icon(icon)
 
 background_image = pygame.image.load('assets/bg.jpg')
@@ -30,6 +30,22 @@ def draw_markers(screen, markers):
     if len(markers) > 1:
         for i in range(len(markers) - 1):
             pygame.draw.line(screen, (0, 255, 0), (markers[i][0], markers[i][1]), (markers[i + 1][0], markers[i + 1][1]), 2)
+
+def draw_controls(screen):
+    font = pygame.font.Font(None, 24)
+    controls = [
+        "Controles:",
+        "Clique esquerdo: Marcar estrela",
+        "F10: Salvar marcações",
+        "F11: Carregar marcações",
+        "F12: Excluir todas as marcações",
+        "ESC: Salvar e sair"
+    ]
+    y_offset = 10
+    for line in controls:
+        text = font.render(line, True, (255, 255, 255))
+        screen.blit(text, (10, y_offset))
+        y_offset += 30
 
 def save_markers():
     try:
@@ -55,7 +71,6 @@ def clear_markers():
     global markers
     markers = []
 
-
 def get_star_name():
     root = tk.Tk()
     root.withdraw()  # Oculta a janela principal do Tkinter
@@ -66,14 +81,15 @@ def get_star_name():
     return star_name
 
 
-
-
-running  = True
+running = True
 while running:
     screen.blit(background_image, (0, 0))
     draw_markers(screen, markers)
+    draw_controls(screen)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save_markers()
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -81,7 +97,17 @@ while running:
             star_name = get_star_name()
             markers.append((x, y, star_name))
 
-    
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F10:  # Salvar marcações
+                save_markers()
+            elif event.key == pygame.K_F11:  # Carregar marcações
+                load_markers()
+            elif event.key == pygame.K_F12:  # Excluir todas as marcações
+                clear_markers()
+            elif event.key == pygame.K_ESCAPE:  # Salvar e sair
+                save_markers()
+                running = False
+
     pygame.display.flip()
 
 pygame.quit()
